@@ -62,6 +62,11 @@ def add_upload_subparser(subparsers: argparse._SubParsersAction) -> argparse.Arg
         action="store_true",
         help="Disable TLS/SSL certificate verification (NOT recommended).",
     )
+    upload_parser.add_argument(
+        "--location",
+        default="us-east-1",
+        help="AWS region name (default: us-east-1).",
+    )
     return upload_parser
 
 
@@ -141,6 +146,7 @@ def handle_upload(args: argparse.Namespace) -> int:
 
     client = boto3.client(
         "s3",
+        region_name=args.location,
         endpoint_url=args.endpoint,
         aws_access_key_id=args.s3key,
         aws_secret_access_key=args.s3secret,
@@ -181,8 +187,9 @@ def handle_upload(args: argparse.Namespace) -> int:
     throughput = mb / overall_elapsed if overall_elapsed > 0 else 0.0
 
     logger.info(
-        "upload_summary | endpoint=%s bucket=%s objects=%d size=%s total_bytes=%d duration_s=%.4f throughput_mb_s=%.4f",
+        "upload_summary | endpoint=%s region=%s bucket=%s objects=%d size=%s total_bytes=%d duration_s=%.4f throughput_mb_s=%.4f",
         args.endpoint,
+        args.location,
         args.bucket,
         args.object_count,
         args.object_size,
