@@ -235,3 +235,4 @@ def main(argv: Optional[List[str]] = None) -> None:  # noqa: D401
 if __name__ == "__main__":
     main()
 
+
