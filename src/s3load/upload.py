@@ -14,6 +14,57 @@ import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 
 
+def add_upload_subparser(subparsers: argparse._SubParsersAction) -> argparse.ArgumentParser:
+    """Register the 'upload' subcommand and return its parser."""
+    upload_parser = subparsers.add_parser(
+        "upload",
+        help="Upload random objects to an S3 bucket and measure performance.",
+    )
+    upload_parser.add_argument(
+        "-e",
+        "--endpoint",
+        required=True,
+        help="S3 endpoint URL (e.g., https://s3.amazonaws.com or custom).",
+    )
+    upload_parser.add_argument(
+        "--s3key",
+        required=True,
+        help="S3 access key (AWS access key ID).",
+    )
+    upload_parser.add_argument(
+        "--s3secret",
+        required=True,
+        help="S3 secret key (AWS secret access key).",
+    )
+    upload_parser.add_argument(
+        "-b",
+        "--bucket",
+        required=True,
+        help="Target S3 bucket name.",
+    )
+    upload_parser.add_argument(
+        "-n",
+        "--object-count",
+        "--object--count",
+        dest="object_count",
+        type=int,
+        default=100,
+        help="Number of objects to upload (default: 100).",
+    )
+    upload_parser.add_argument(
+        "-s",
+        "--object-size",
+        default="4k",
+        help="Object size, accepts suffix k/m/g (e.g., 4k, 8m, 2g). Default: 4k.",
+    )
+    upload_parser.add_argument(
+        "--insecure",
+        action="store_true",
+        help="Disable TLS/SSL certificate verification (NOT recommended).",
+    )
+    return upload_parser
+
+
 def parse_size(size_text: str) -> int:
     """Parse human-readable size like '4k', '8m', '2g' into bytes."""
     text = size_text.strip().lower()
