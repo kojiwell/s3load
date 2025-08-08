@@ -72,6 +72,11 @@ def build_parser() -> argparse.ArgumentParser:
         default="4k",
         help="Object size, accepts suffix k/m/g (e.g., 4k, 8m, 2g). Default: 4k.",
     )
+    upload_parser.add_argument(
+        "--insecure",
+        action="store_true",
+        help="Disable TLS/SSL certificate verification (NOT recommended).",
+    )
 
     return parser
 
@@ -157,6 +162,7 @@ def handle_upload(args: argparse.Namespace) -> int:
         endpoint_url=args.endpoint,
         aws_access_key_id=args.s3key,
         aws_secret_access_key=args.s3secret,
+        verify=not args.insecure,
     )
 
     total_bytes = 0
