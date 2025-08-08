@@ -1,0 +1,17 @@
+[project]
+name = "s3load"
+version = "0.1.1"
+description = "Command-line tool for loading data to Amazon S3"
+authors = [
+  {name = "Your Name", email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+s3load = "s3load.__main__:main"
+
+[build-system]
+requires = ["setuptools>=67", "wheel"]
+build-backend = "setuptools.build_meta"
